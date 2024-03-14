@@ -14,8 +14,10 @@
     "@prisma/client": "^5.11.0",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
+    "cpf-check": "^3.0.0",
     "eslint": "^8.57.0",
     "express": "4.17.1",
+    "joi": "^17.12.2",
     "nodemon": "2.0.14"
   }
 }
