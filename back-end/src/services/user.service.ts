@@ -25,4 +25,10 @@ export default class UserService  {
     await this.db.$disconnect();
     return { status: 'OK', data: newUser };
   }
+
+  async update(id: number, user: User): Promise<ServiceResponse<User>> {
+    const updatedUser = await this.db.user.update({ where: { id }, data: user }) as User;
+    await this.db.$disconnect();
+    return { status: 'OK', data: updatedUser };
+  }
 }

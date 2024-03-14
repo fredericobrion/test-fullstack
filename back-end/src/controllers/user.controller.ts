@@ -23,4 +23,11 @@ export default class UserController {
     const newUser = await this.userService.create(user);
     res.status(mapStatusHTTP(newUser.status)).json(newUser.data);
   }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const user = req.body;
+    const updatedUser = await this.userService.update(Number(id), user);
+    res.status(mapStatusHTTP(updatedUser.status)).json(updatedUser.data);
+  }
 }
