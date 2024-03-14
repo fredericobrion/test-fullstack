@@ -1,6 +1,6 @@
 type ServiceMessage = { message: string };
 
-type ServiceResponseErrorType = 'NOT_FOUND' | 'BAD_REQUEST' | 'INTERNAL_SERVER_ERROR';
+type ServiceResponseErrorType = 'NOT_FOUND' | 'BAD_REQUEST' | 'INTERNAL_SERVER_ERROR' | 'CONFLICT';
 
 type ServiceResponseError = {
   status: ServiceResponseErrorType;

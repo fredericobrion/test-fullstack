@@ -11,10 +11,10 @@ datasource db {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  name     String?
-  cpf      String?  @unique
-  phone    String?  @unique
-  status   String   @default("ACTIVE")
+  id     Int     @id @default(autoincrement())
+  email  String  @unique
+  name   String?
+  cpf    String? @unique
+  phone  String?
+  status String  @default("ACTIVE")
 }

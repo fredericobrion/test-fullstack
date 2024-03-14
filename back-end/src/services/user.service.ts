@@ -13,7 +13,10 @@ export default class UserService {
       await this.db.$disconnect();
       return { status: "OK", data: users };
     } catch (error: unknown) {
-      return { status: "INTERNAL_SERVER_ERROR", data: { message: (error as Error).message } };
+      return {
+        status: "INTERNAL_SERVER_ERROR",
+        data: { message: (error as Error).message },
+      };
     }
   }
 
@@ -21,39 +24,60 @@ export default class UserService {
     try {
       const user = (await this.db.user.findUnique({ where: { id } })) as User;
       if (!user) {
-        return { status: "NOT_FOUND", data: { message: "User not found" } };
+        return { status: "CONFLICT", data: { message: "User not found" } };
       }
       await this.db.$disconnect();
       return { status: "OK", data: user };
     } catch (error: unknown) {
-      return { status: "INTERNAL_SERVER_ERROR", data: { message: (error as Error).message } };
+      return {
+        status: "INTERNAL_SERVER_ERROR",
+        data: { message: (error as Error).message },
+      };
     }
   }
 
   async create(user: User): Promise<ServiceResponse<User>> {
     try {
+      const { email, cpf } = user;
+      const userInDb = await this.db.user.findFirst({
+        where: {
+          OR: [{ email }, { cpf }],
+        },
+      });
+      if (userInDb) {
+        return {
+          status: "CONFLICT",
+          data: { message: "User already registered with email or cpf" },
+        };
+      }
       const newUser = (await this.db.user.create({ data: user })) as User;
       await this.db.$disconnect();
       return { status: "CREATED", data: newUser };
     } catch (error: unknown) {
-      return { status: "INTERNAL_SERVER_ERROR", data: { message: (error as Error).message } };
+      return {
+        status: "INTERNAL_SERVER_ERROR",
+        data: { message: (error as Error).message },
+      };
     }
   }
 
   async update(id: number, user: User): Promise<ServiceResponse<User>> {
     try {
-        const userInDb = this.db.user.findUnique({ where: { id } });
-        if (!userInDb) {
-          return { status: "NOT_FOUND", data: { message: "User not found" } };
-        }
-        const updatedUser = (await this.db.user.update({
-          where: { id },
-          data: user,
-        }));
-        await this.db.$disconnect();
-        return { status: "OK", data: updatedUser as User };
+      const userInDb = await this.db.user.findUnique({ where: { id } });
+      if (!userInDb) {
+        return { status: "NOT_FOUND", data: { message: "User not found" } };
+      }
+      const updatedUser = await this.db.user.update({
+        where: { id },
+        data: user,
+      });
+      await this.db.$disconnect();
+      return { status: "OK", data: updatedUser as User };
     } catch (error: unknown) {
-      return { status: "INTERNAL_SERVER_ERROR", data: { message: (error as Error).message } };
+      return {
+        status: "INTERNAL_SERVER_ERROR",
+        data: { message: (error as Error).message },
+      };
     }
   }
 }
