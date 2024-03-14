@@ -6,5 +6,7 @@ const userController = new UserController();
 const router = Router();
 
 router.get('/', (req: Request, res: Response) => userController.findAll(req, res));
+router.get('/:id', (req: Request, res: Response) => userController.findOne(req, res));
+router.post('/', (req: Request, res: Response) => userController.create(req, res));
 
 export default router;

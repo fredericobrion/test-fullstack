@@ -1,18 +1,28 @@
+import { PrismaClient } from '@prisma/client';
 import { User } from '../classes/User'
 import { ServiceResponse } from '../types/serviceResponse';
-import UserPrismaDatabase from '../models/UserPrismaDatabase';
 
 export default class UserService  {
-  private db = new UserPrismaDatabase;
+  private db = new PrismaClient();
 
   constructor() {
   }
 
   async findAll(): Promise<ServiceResponse<User[]>> {
-    await this.db.connect();
-    const usersData = await this.db.findAll();
-    await this.db.disconnect();
-    const users = usersData.map((user: User) => new User(user));
+    const users = await this.db.user.findMany() as User[];
+    await this.db.$disconnect();
     return { status: 'OK', data: users };
+  }
+
+  async findOne(id: number): Promise<ServiceResponse<User>> {
+    const user = await this.db.user.findUnique({ where: { id } }) as User;
+    await this.db.$disconnect();
+    return { status: 'OK', data: user };
+  }
+
+  async create(user: User): Promise<ServiceResponse<User>> {
+    const newUser = await this.db.user.create({ data: user }) as User;
+    await this.db.$disconnect();
+    return { status: 'OK', data: newUser };
   }
 }
