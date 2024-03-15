@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0 10%;
+}
+
+.container h2 {
+  color: var(--text-color);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.container h3 {
+  color: var(--text-color);
+  font-size: 1.3rem;
+}

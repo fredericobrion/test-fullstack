@@ -1,7 +1,6 @@
 import { useContext, useEffect } from "react";
 import Context from "../../context/Context";
 import UserCard from "../../components/userCard";
-import userIcon from "../../assets/user-icon.svg";
 import styles from './main.module.css';
 import { useNavigate } from "react-router-dom";
 
@@ -18,10 +17,6 @@ function MainPage() {
 
   return (
     <>
-      <h1 className={styles.title}>
-        <img src={userIcon} alt="Logo de usuário" />
-        Painel de clientes
-      </h1>
       <div className={styles.container}>
         <div>
           <h2>Listagem de usuários</h2>

@@ -5,3 +5,19 @@
   justify-content: center;
   width: 100vw;
 }
+
+.title {
+  border-bottom: 1px solid #eee8e8;
+  color: rgb(56, 54, 54);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 5rem 0 2rem 10%;
+  padding-bottom: 1rem;
+  width: 80%;
+}
+
+.title img {
+  height: auto;
+  margin-right: 1rem;
+  width: 1.6rem;
+}
