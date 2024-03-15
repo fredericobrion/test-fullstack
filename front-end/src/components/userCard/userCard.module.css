@@ -1,13 +1,85 @@
 .container {
+  border: 1px solid #eee8e8;
   display: flex;
+  justify-content: space-evenly;
+  margin: 1.5rem 10%;
 }
 
-.co1, .col2 {
-  flex: 1 0 25%;
+.col1,
+.col2,
+.col3,
+.col4 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.5rem;
+  width: 25%;
 }
 
-.col3, .col4 {
-  flex: 1 0 25%;
-  margin: 5px;
+.col3 {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
+.col4 {
+  align-items: center;
+  width: 15%;
+}
+
+.container p {
+  color: var(--text-color);
+  font-size: 1.3rem;
+}
+
+.container p strong {
+  font-weight: 700;
+}
+
+.activeCircle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: green;
+}
+
+.inactiveCircle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: red;
+}
+
+.disabledCircle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgb(196, 193, 193);
+}
+
+.pendingCircle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: orange;
+}
+
+.container button {
+  background: none;
+  border: 1px solid orange;
+  border-radius: 5px;
+  color: orange;
+  cursor: pointer;
+  font-size: 1rem;
+  height: 2.3rem;
+  transition: all 0.2s ease-in-out;
+  width: 7rem;
+}
+
+.container button:hover {
+  background: orange;
+  color: white;
+}
