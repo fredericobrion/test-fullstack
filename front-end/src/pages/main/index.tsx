@@ -1,7 +1,21 @@
+import { useContext, useEffect } from 'react';
+import Context from '../../context/Context';
+import UserCard from '../../components/userCard';
+
 function MainPage() {
+  const {getUsersFromDb, users} = useContext(Context);
+
+  useEffect(() => {
+    if (!users.length) {
+      getUsersFromDb();
+    }
+  }, [])
+
   return (
     <div>
-      <h1>Main Page</h1>
+      {users.map((user) => {
+        return <UserCard key={user.id} user={user}/>
+      })}
     </div>
   );
 }
