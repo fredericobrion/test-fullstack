@@ -23,10 +23,8 @@ const formatPhone = (value: string) => {
   const phoneNumbers = removeNonNumeric(value);
   if (phoneNumbers.length === 0) {
     return "";
-  } else if (phoneNumbers.length === 1) {
+  } else if (phoneNumbers.length <= 2) {
     return `(${phoneNumbers}`;
-  } else if (phoneNumbers.length === 2) {
-    return `(${phoneNumbers})`;
   } else if (phoneNumbers.length <= 6) {
     return `(${phoneNumbers.slice(0, 2)}) ${phoneNumbers.slice(2, 6)}`;
   } else {

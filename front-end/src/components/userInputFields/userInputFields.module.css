@@ -6,6 +6,11 @@
   max-width: 18rem;
 }
 
+.form h2 {
+  color: red;
+  font-size: 1.2rem;
+}
+
 .form input {
   border: 1px solid rgb(102, 96, 96);
   border-radius: 5px;
@@ -20,11 +25,15 @@ form input:focus {
   border: 2px solid orange;
 }
 
+.error {
+  color: red;
+}
+
 form select {
   background: none;
   border: 1px solid rgb(102, 96, 96);
   border-radius: 5px;
-  color: var(--color-text);
+  color: rgb(102, 96, 96);
   font-size: 1rem;
   height: 2.5rem;
   padding-left: 0.5rem;

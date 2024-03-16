@@ -1,19 +1,123 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from "./userInputFields.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { formatCPF, formatPhone } from "../../utils/formatInputs";
+import Context from "../../context/Context";
+import { validateInputs } from "../../utils/validateInputs";
+
+type status = "ACTIVE" | "INACTIVE" | "DISABLED" | "PENDING";
 
 function UserInputFields() {
-  const [cpf, setCpf] = useState("");
-  const [phone, setPhone] = useState("");
-
   const navigate = useNavigate();
   const location = useLocation();
 
+  const {
+    createUserInDb,
+    updateUserInDb,
+    users,
+    setLoading,
+    error,
+    setError,
+    setUserBeingCreated,
+    userBeingCreated
+  } = useContext(Context);
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [phone, setPhone] = useState("");
+  const [status, setStatus] = useState<status>("");
+  const [errors, setErrors] = useState({
+    name: false,
+    email: false,
+    cpfFormat: false,
+    phone: false,
+    status: false,
+    validsInputs: false,
+  });
+
+  if (location.pathname !== "/add") {
+    const id = location.pathname.slice(1);
+    const foundUser = users.find((user) => user.id === Number(id));
+    if (foundUser) {
+      setName(foundUser.name);
+      setEmail(foundUser.email);
+      setCpf(foundUser.cpf);
+      setPhone(foundUser.phone);
+      setStatus(foundUser.status);
+    }
+  }
+
+  useEffect(() => {
+    const checkUserBeingCreated = () => {
+      if (userBeingCreated) {
+        setName(userBeingCreated.name);
+        setEmail(userBeingCreated.email);
+        setCpf(userBeingCreated.cpf);
+        setPhone(userBeingCreated.phone);
+        setStatus(userBeingCreated.status);
+      }
+    }
+
+    checkUserBeingCreated();
+  }, [])
+
+  const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const inputsValidations = validateInputs(name, email, cpf, phone, status);
+      setErrors(inputsValidations);
+      if (inputsValidations.validsInputs) {
+        await createUserInDb({ name, email, cpf, phone, status });
+        setError("");
+        setUserBeingCreated(null);
+        navigate("/");
+      }
+    } catch {
+      setUserBeingCreated({ name, email, cpf, phone, status });
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const id = location.pathname.slice(1);
+    const inputsValidations = validateInputs(name, email, cpf, phone, status);
+    setErrors(inputsValidations);
+    if (inputsValidations.validsInputs) {
+      updateUserInDb({ id: Number(id), name, email, cpf, phone, status });
+      navigate("/");
+    }
+  };
+
   return (
-    <form className={styles.form}>
-      <input type="text" id="name" placeholder="Nome" />
-      <input type="email" id="email" placeholder="E-mail" />
+    <form
+      className={styles.form}
+      onSubmit={(e) =>
+        location.pathname === "/add" ? handleCreate(e) : handleUpdate(e)
+      }
+    >
+      {error !== "" && <h2>{error}!</h2>}
+      <input
+        type="text"
+        id="name"
+        placeholder="Nome"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      {errors.name && (
+        <p className={styles.error}>O usuário deve ter um nome.</p>
+      )}
+      <input
+        type="email"
+        id="email"
+        placeholder="E-mail"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      {errors.email && <p className={styles.error}>E-mail inválido.</p>}
       <input
         type="text"
         id="cpf"
@@ -21,6 +125,11 @@ function UserInputFields() {
         value={cpf}
         onChange={(e) => setCpf(formatCPF(e.target.value))}
       />
+      {errors.cpfFormat && (
+        <p className={styles.error}>
+          Formato inválido. O CPF deve ter 11 digitos.
+        </p>
+      )}
       <input
         type="text"
         id="phone"
@@ -28,12 +137,23 @@ function UserInputFields() {
         value={phone}
         onChange={(e) => setPhone(formatPhone(e.target.value))}
       />
-      <select id="status">
+      {errors.phone && (
+        <p className={styles.error}>
+          Formato inválido. O celular deve ter DDD + 8 digitos.
+        </p>
+      )}
+      <select
+        id="status"
+        value={status}
+        onChange={(e) => setStatus(e.target.value as status)}
+      >
+        <option value="">Status</option>
         <option value="ACTIVE">Active</option>
         <option value="INACTIVE">Inactive</option>
         <option value="DISABLED">Disabled</option>
         <option value="PENDING">Pending</option>
       </select>
+      {errors.status && <p className={styles.error}>Selecione um status.</p>}
       <div>
         <button type="submit">
           {location.pathname === "/add" ? "Criar" : "Atualizar"}

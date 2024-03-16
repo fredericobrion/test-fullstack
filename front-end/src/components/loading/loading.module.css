@@ -1,0 +1,13 @@
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 15%;
+}
+
+.container h2 {
+  color: var(--text-color);
+  font-size: 3rem;
+}
