@@ -24,7 +24,7 @@ export default class UserService {
     try {
       const user = (await this.db.user.findUnique({ where: { id } })) as User;
       if (!user) {
-        return { status: "CONFLICT", data: { message: "User not found" } };
+        return { status: "CONFLICT", data: { message: "Usuário não encontrado" } };
       }
       await this.db.$disconnect();
       return { status: "OK", data: user };
@@ -47,7 +47,7 @@ export default class UserService {
       if (userInDb) {
         return {
           status: "CONFLICT",
-          data: { message: "User already registered with email or cpf" },
+          data: { message: "Usuário já registrado com o e-mail ou CPF" },
         };
       }
       const newUser = (await this.db.user.create({ data: user })) as User;
@@ -65,7 +65,7 @@ export default class UserService {
     try {
       const userInDb = await this.db.user.findUnique({ where: { id } });
       if (!userInDb) {
-        return { status: "NOT_FOUND", data: { message: "User not found" } };
+        return { status: "NOT_FOUND", data: { message: "Usuário não encontrado" } };
       }
       const updatedUser = await this.db.user.update({
         where: { id },
