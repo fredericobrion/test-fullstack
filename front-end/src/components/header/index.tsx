@@ -18,8 +18,7 @@ function Header() {
         <img src={userIcon} alt="Logo de usuário" />
         Painel de clientes
       </h1>
-      {loading && <Loading />}
-      {!loading && <Outlet />}
+      {loading ? <Loading /> : <Outlet />}
     </>
   );
 }

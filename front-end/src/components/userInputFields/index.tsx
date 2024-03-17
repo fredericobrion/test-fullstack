@@ -19,7 +19,7 @@ function UserInputFields() {
     error,
     setError,
     setUserBeingCreated,
-    userBeingCreated
+    userBeingCreated,
   } = useContext(Context);
 
   const [name, setName] = useState("");
@@ -36,18 +36,6 @@ function UserInputFields() {
     validsInputs: false,
   });
 
-  if (location.pathname !== "/add") {
-    const id = location.pathname.slice(1);
-    const foundUser = users.find((user) => user.id === Number(id));
-    if (foundUser) {
-      setName(foundUser.name);
-      setEmail(foundUser.email);
-      setCpf(foundUser.cpf);
-      setPhone(foundUser.phone);
-      setStatus(foundUser.status);
-    }
-  }
-
   useEffect(() => {
     const checkUserBeingCreated = () => {
       if (userBeingCreated) {
@@ -57,10 +45,27 @@ function UserInputFields() {
         setPhone(userBeingCreated.phone);
         setStatus(userBeingCreated.status);
       }
-    }
+    };
 
-    checkUserBeingCreated();
-  }, [])
+    const checkExistingUser = () => {
+      const id = location.pathname.slice(1);
+      const foundUser = users.find((user) => user.id === Number(id));
+      if (foundUser) {
+        setName(foundUser.name);
+        setEmail(foundUser.email);
+        setCpf(foundUser.cpf);
+        setPhone(foundUser.phone);
+        setStatus(foundUser.status);
+      }
+    };
+
+    if (location.pathname !== "/add") {
+      setUserBeingCreated(null);
+      checkExistingUser();
+    } else {
+      checkUserBeingCreated();
+    }
+  }, []);
 
   const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -83,14 +88,26 @@ function UserInputFields() {
 
   const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const id = location.pathname.slice(1);
-    const inputsValidations = validateInputs(name, email, cpf, phone, status);
-    setErrors(inputsValidations);
-    if (inputsValidations.validsInputs) {
-      updateUserInDb({ id: Number(id), name, email, cpf, phone, status });
-      navigate("/");
+    try {
+      const id = location.pathname.slice(1);
+      const inputsValidations = validateInputs(name, email, cpf, phone, status);
+      setErrors(inputsValidations);
+      if (inputsValidations.validsInputs) {
+        updateUserInDb({ id: Number(id), name, email, cpf, phone, status });
+        navigate("/");
+      }
+    } catch {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  const handleNavigateBack = () => {
+    setUserBeingCreated(null);
+    setError("");
+    navigate("/");
+  }
 
   return (
     <form
@@ -158,7 +175,7 @@ function UserInputFields() {
         <button type="submit">
           {location.pathname === "/add" ? "Criar" : "Atualizar"}
         </button>
-        <button onClick={() => navigate("/")}>Voltar</button>
+        <button onClick={() => handleNavigateBack()}>Voltar</button>
       </div>
     </form>
   );

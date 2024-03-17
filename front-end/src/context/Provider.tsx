@@ -27,10 +27,16 @@ function Provider({ children }: ProviderProps) {
   const [userBeingCreated, setUserBeingCreated] = useState<User | null>(null);
 
   const getUsersFromDb = async () => {
-    setLoading(true);
-    const users = await getAllUsers();
-    setUsers(users);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const users = await getAllUsers();
+      setUsers(users);
+    } catch (e: unknown) {
+      setError((e as Error).message);
+      throw new Error((e as Error).message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const createUserInDb = async (user: User) => {
@@ -38,10 +44,11 @@ function Provider({ children }: ProviderProps) {
       setLoading(true);
       const createdUser = (await createUser(user)) as User;
       setUsers([...users, createdUser]);
-      setLoading(false);
     } catch (e: unknown) {
       setError((e as Error).message);
       throw new Error((e as Error).message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,9 +64,11 @@ function Provider({ children }: ProviderProps) {
       });
       setUsers(updatedUsers);
     } catch (e: unknown) {
-      console.log((e as Error).message);
+      setError((e as Error).message);
+      throw new Error((e as Error).message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const values = useMemo(

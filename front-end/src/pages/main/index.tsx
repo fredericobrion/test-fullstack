@@ -10,8 +10,6 @@ function MainPage() {
 
   const { getUsersFromDb, users, setUserBeingCreated } = useContext(Context);
 
-  setUserBeingCreated(null);
-
   useEffect(() => {
     if (!users.length) {
       try {
@@ -22,6 +20,11 @@ function MainPage() {
     }
   }, []);
 
+  const handleNavigateToAdd = () => {
+    setUserBeingCreated(null);
+    navigate("add");
+  }
+
   return (
     <>
       <div className={styles.container}>
@@ -29,7 +32,8 @@ function MainPage() {
           <h2>Listagem de usuários</h2>
           <h3>Escolha um cliente para visualizar os detalhes</h3>
         </div>
-        <button onClick={() => navigate("add")}>Novo cliente</button>
+        {/* <button onClick={() => navigate("add")}>Novo cliente</button> */}
+        <button onClick={() => handleNavigateToAdd()}>Novo cliente</button>
       </div>
       <div>
         {users.map((user) => {

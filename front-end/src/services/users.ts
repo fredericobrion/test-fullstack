@@ -1,18 +1,17 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { User } from "../types/User";
 const HOST = import.meta.env.VITE_REACT_API_URL || "http://localhost:3001";
-
-type ErrorFromApi = {
-  data: { message: string };
-};
 
 const getAllUsers = async () => {
   try {
     const response = await axios.get(`${HOST}/users`);
     return response.data as Promise<User[]>;
   } catch (e: unknown) {
-    console.log((e as Error).message);
-    return [];
+    if (e.response && e.response.data && e.response.data.message) {
+      throw new Error(e.response.data.message);
+    } else {
+      throw new Error("Erro ao listar usuários");
+    }
   }
 };
 
@@ -35,7 +34,11 @@ const updateUser = async (user: User) => {
       params: { id: user.id },
     });
   } catch (e: unknown) {
-    console.log((e as Error).message);
+    if (e.response && e.response.data && e.response.data.message) {
+      throw new Error(e.response.data.message);
+    } else {
+      throw new Error("Erro ao atualizar usuário");
+    }
   }
 };
 
