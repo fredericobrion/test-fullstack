@@ -22,6 +22,9 @@ describe("Testando a página de criar usuário", () => {
       name: /informe os campos a seguir para criar novo usuário:/i,
     });
 
+    const uolLogo = screen.getByRole("img", {
+      name: /logo da uol/i,
+    });
     const nameInput = screen.getByPlaceholderText(/nome/i);
     const emailInput = screen.getByPlaceholderText(/e-mail/i);
     const cpfInput = screen.getByPlaceholderText(/cpf/i);
@@ -34,6 +37,7 @@ describe("Testando a página de criar usuário", () => {
       name: /voltar/i,
     });
 
+    expect(uolLogo).toBeInTheDocument();
     expect(infoText).toBeInTheDocument();
     expect(nameInput).toBeInTheDocument();
     expect(emailInput).toBeInTheDocument();
@@ -152,9 +156,7 @@ describe("Testando a página de criar usuário", () => {
     const cpfError = await screen.findByText(
       /Formato inválido. O CPF deve ter 11 digitos./i
     );
-    const phoneError = await screen.findByText(
-      /celular deve ter DDD/i
-    );
+    const phoneError = await screen.findByText(/celular deve ter DDD/i);
     const statusError = await screen.findByText(/Selecione um status./i);
 
     expect(nameError).toBeInTheDocument();
@@ -162,5 +164,40 @@ describe("Testando a página de criar usuário", () => {
     expect(cpfError).toBeInTheDocument();
     expect(phoneError).toBeInTheDocument();
     expect(statusError).toBeInTheDocument();
+  });
+
+  it("Testa se a mensagem de erro de e-mail já cadastrado aparece corretamente", async () => {
+    vi.mocked(createUser).mockImplementationOnce(() => {
+      throw new Error("Usuário já registrado com o e-mail ou CPF!");
+    });
+
+    const { user } = renderWithRouter(
+      <Provider>
+        <App />
+      </Provider>,
+      { route: "/add" }
+    );
+
+    const createBtn = screen.getByRole("button", {
+      name: /criar/i,
+    });
+
+    const nameInput = screen.getByPlaceholderText(/nome/i);
+    const emailInput = screen.getByPlaceholderText(/e-mail/i);
+    const cpfInput = screen.getByPlaceholderText(/cpf/i);
+    const phoneInput = screen.getByPlaceholderText(/telefone/i);
+    const statusInput = screen.getByRole("combobox");
+
+    await user.type(nameInput, "José");
+    await user.type(emailInput, "jose@uol.com");
+    await user.type(cpfInput, "12345678900");
+    await user.type(phoneInput, "1199999999");
+    await user.selectOptions(statusInput, "ACTIVE");
+
+    await user.click(createBtn);
+
+    const error = await screen.findByText(/já registrado/i);
+
+    expect(error).toBeInTheDocument();
   });
 });

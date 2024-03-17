@@ -11,32 +11,48 @@ function UserCard({ user }: UserCardProps) {
 
   const { cpf, email, id, name, phone, status } = user;
 
-  const statusColor = (status: string) => {
+  let statusColor = styles.activeCircle;
+  let translatedStatus = "Ativo";
+
+  const defineStatus = () => {
     switch (status) {
       case "ACTIVE":
-        return styles.activeCircle;
+        statusColor = styles.activeCircle;
+        translatedStatus = "Ativo";
+        break;
       case "INACTIVE":
-        return styles.inactiveCircle;
+        statusColor = styles.inactiveCircle;
+        translatedStatus = "Inativo";
+        break;
       case "PENDING":
-        return styles.pendingCircle;
+        statusColor = styles.pendingCircle;
+        translatedStatus = "Pendente";
+        break;
       default:
-        return styles.disabledCircle;
+        statusColor = styles.disabledCircle;
+        translatedStatus = "Desativado";
     }
   }
+
+  defineStatus();
 
   return (
     <div className={styles.container}>
       <div className={styles.col1}>
-        <p><strong>{name}</strong></p>
+        <p>
+          <strong>{name}</strong>
+        </p>
         <p>{email}</p>
       </div>
       <div className={styles.col2}>
-        <p><strong>{cpf}</strong></p>
+        <p>
+          <strong>{cpf}</strong>
+        </p>
         <p>{phone}</p>
       </div>
       <div className={styles.col3}>
-        <div className={statusColor(status)}></div>
-        <p>{status}</p>
+        <div className={statusColor}></div>
+        <p>{translatedStatus}</p>
       </div>
       <div className={styles.col4}>
         <button onClick={() => navigate(`${id}`)}>Editar</button>

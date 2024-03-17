@@ -76,7 +76,7 @@ export default class UserService implements IUserService {
       ) {
         return {
           status: "CONFLICT",
-          data: { message: "Usuário já registrado com o e-mail ou CPF" },
+          data: { message: "Outro usuário já registrado com o e-mail ou CPF" },
         };
       }
       const updatedUser = await this.db.updateUser(id, user);

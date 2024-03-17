@@ -7,16 +7,13 @@ import Provider from "../src/context/Provider";
 import { users } from "./mocks/user";
 import { getAllUsers } from "../src/services/users";
 import MainPage from "../src/pages/main";
-import userEvent from "@testing-library/user-event";
-import App from "../src/App";
-import { renderWithRouter } from "./utils/renderWithRouter";
 
 vi.mock("../src/services/users");
 
 describe("Testando a página inicial", () => {
   afterEach(() => {
     vi.resetAllMocks();
-  })
+  });
 
   it("A página inicial renderiza os elementos estáticos", async () => {
     vi.mocked(getAllUsers).mockResolvedValue(users);
@@ -61,26 +58,4 @@ describe("Testando a página inicial", () => {
     expect(emailJoao).toBeInTheDocument();
     expect(emailMaria).toBeInTheDocument();
   });
-
-  // it("O botão de novo cliente redireciona para a página de adição", async () => {
-  //   vi.mocked(getAllUsers).mockResolvedValue(users);
-
-  //   renderWithRouter(
-  //       <Provider>
-  //         <App />
-  //       </Provider>
-  //   );
-
-  //   const newClientBtn = screen.getByRole("button", {
-  //     name: /novo cliente/i,
-  //   });
-
-  //   userEvent.click(newClientBtn);
-
-  //   const addClient = await screen.getByRole('button', {
-  //     name: /criar/i
-  //   })
-
-  //   expect(addClient).toBeInTheDocument();
-  // });
 });

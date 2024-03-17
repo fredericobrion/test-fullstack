@@ -19,7 +19,6 @@ function MainPage() {
         setUsers(users);
       } catch (e: unknown) {
         setError((e as Error).message);
-        throw new Error((e as Error).message);
       } finally {
         setLoading(false);
       }

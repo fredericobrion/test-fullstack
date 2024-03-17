@@ -83,7 +83,6 @@ function UserInputFields() {
     } catch (e: unknown) {
       setError((e as Error).message);
       setUserBeingCreated({ name, email, cpf, phone, status });
-      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -109,7 +108,6 @@ function UserInputFields() {
       }
     } catch (e: unknown) {
       setError((e as Error).message);
-      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -134,6 +132,7 @@ function UserInputFields() {
         id="name"
         placeholder="Nome"
         value={name}
+        data-testid="name"
         onChange={(e) => setName(e.target.value)}
       />
       {errors.name && (
@@ -144,6 +143,7 @@ function UserInputFields() {
         id="email"
         placeholder="E-mail"
         value={email}
+        data-testid="email"
         onChange={(e) => setEmail(e.target.value)}
       />
       {errors.email && <p className={styles.error}>E-mail inválido.</p>}
@@ -152,6 +152,7 @@ function UserInputFields() {
         id="cpf"
         placeholder="CPF"
         value={cpf}
+        data-testid="cpf"
         onChange={(e) => setCpf(formatCPF(e.target.value))}
       />
       {errors.cpfFormat && (
@@ -164,6 +165,7 @@ function UserInputFields() {
         id="phone"
         placeholder="Telefone"
         value={phone}
+        data-testid="phone"
         onChange={(e) => setPhone(formatPhone(e.target.value))}
       />
       {errors.phone && (
@@ -174,13 +176,14 @@ function UserInputFields() {
       <select
         id="status"
         value={status}
+        data-testid="status"
         onChange={(e) => setStatus(e.target.value as status)}
       >
         <option value="">Status</option>
-        <option value="ACTIVE">Active</option>
-        <option value="INACTIVE">Inactive</option>
-        <option value="DISABLED">Disabled</option>
-        <option value="PENDING">Pending</option>
+        <option value="ACTIVE">Ativo</option>
+        <option value="INACTIVE">Inativo</option>
+        <option value="DISABLED">Desativado</option>
+        <option value="PENDING">Pendente</option>
       </select>
       {errors.status && <p className={styles.error}>Selecione um status.</p>}
       <div>
