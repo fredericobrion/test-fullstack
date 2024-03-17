@@ -19,4 +19,13 @@ const users = [
   },
 ] as User[];
 
-export { users };
+const newUser = {
+  id: 3,
+  name: "José",
+  email: "jose@uol.com",
+  cpf: "123.456.789-00",
+  phone: "(11) 9999-9999",
+  status: "ACTIVE",
+} as User;
+
+export { users, newUser };

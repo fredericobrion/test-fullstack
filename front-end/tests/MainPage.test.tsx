@@ -1,25 +1,30 @@
 import React from "react";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import App from "../src/App";
 import { MemoryRouter } from "react-router-dom";
 import Provider from "../src/context/Provider";
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
 import { users } from "./mocks/user";
-// import { getAllUsers } from "../src/services/users";
-import { User } from "../src/types/User";
 import { getAllUsers } from "../src/services/users";
+import MainPage from "../src/pages/main";
+import userEvent from "@testing-library/user-event";
+import App from "../src/App";
+import { renderWithRouter } from "./utils/renderWithRouter";
+
+vi.mock("../src/services/users");
 
 describe("Testando a página inicial", () => {
+  afterEach(() => {
+    vi.resetAllMocks();
+  })
+
   it("A página inicial renderiza os elementos estáticos", async () => {
-    
+    vi.mocked(getAllUsers).mockResolvedValue(users);
 
     render(
       <MemoryRouter>
         <Provider>
-          <App />
+          <MainPage />
         </Provider>
       </MemoryRouter>
     );
@@ -38,4 +43,44 @@ describe("Testando a página inicial", () => {
     expect(visualizeClients).toBeInTheDocument();
     expect(newClientBtn).toBeInTheDocument();
   });
+
+  it("A página inicial renderiza os usuários", async () => {
+    vi.mocked(getAllUsers).mockResolvedValue(users);
+
+    render(
+      <MemoryRouter>
+        <Provider>
+          <MainPage />
+        </Provider>
+      </MemoryRouter>
+    );
+
+    const emailJoao = await screen.findByText(users[0].email);
+    const emailMaria = await screen.findByText(users[1].email);
+
+    expect(emailJoao).toBeInTheDocument();
+    expect(emailMaria).toBeInTheDocument();
+  });
+
+  // it("O botão de novo cliente redireciona para a página de adição", async () => {
+  //   vi.mocked(getAllUsers).mockResolvedValue(users);
+
+  //   renderWithRouter(
+  //       <Provider>
+  //         <App />
+  //       </Provider>
+  //   );
+
+  //   const newClientBtn = screen.getByRole("button", {
+  //     name: /novo cliente/i,
+  //   });
+
+  //   userEvent.click(newClientBtn);
+
+  //   const addClient = await screen.getByRole('button', {
+  //     name: /criar/i
+  //   })
+
+  //   expect(addClient).toBeInTheDocument();
+  // });
 });

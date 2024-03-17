@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { formatCPF, formatPhone } from "../../utils/formatInputs";
 import Context from "../../context/Context";
 import { validateInputs } from "../../utils/validateInputs";
+import { createUser, updateUser } from "../../services/users";
 
 type status = "ACTIVE" | "INACTIVE" | "DISABLED" | "PENDING";
 
@@ -12,14 +13,13 @@ function UserInputFields() {
   const location = useLocation();
 
   const {
-    createUserInDb,
-    updateUserInDb,
     users,
     setLoading,
     error,
     setError,
     setUserBeingCreated,
     userBeingCreated,
+    setUsers,
   } = useContext(Context);
 
   const [name, setName] = useState("");
@@ -73,12 +73,15 @@ function UserInputFields() {
       const inputsValidations = validateInputs(name, email, cpf, phone, status);
       setErrors(inputsValidations);
       if (inputsValidations.validsInputs) {
-        await createUserInDb({ name, email, cpf, phone, status });
+        setLoading(true);
+        const createdUser = await createUser({ name, email, cpf, phone, status });
+        setUsers([...users, createdUser]);
         setError("");
         setUserBeingCreated(null);
         navigate("/");
       }
-    } catch {
+    } catch (e: unknown) {
+      setError((e as Error).message);
       setUserBeingCreated({ name, email, cpf, phone, status });
       console.log(error);
     } finally {
@@ -86,17 +89,26 @@ function UserInputFields() {
     }
   };
 
-  const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const id = location.pathname.slice(1);
       const inputsValidations = validateInputs(name, email, cpf, phone, status);
       setErrors(inputsValidations);
       if (inputsValidations.validsInputs) {
-        updateUserInDb({ id: Number(id), name, email, cpf, phone, status });
+        setLoading(true);
+        await updateUser({ id: Number(id), name, email, cpf, phone, status });
+        const updatedUsers = users.map((u) => {
+          if (u.id === Number(id)) {
+            return { id: Number(id), name, email, cpf, phone, status };
+          }
+          return u;
+        });
+        setUsers(updatedUsers);
         navigate("/");
       }
-    } catch {
+    } catch (e: unknown) {
+      setError((e as Error).message);
       console.log(error);
     } finally {
       setLoading(false);
