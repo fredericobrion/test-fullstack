@@ -36,13 +36,3 @@ class App {
 export { App };
 
 export const { app } = new App();
-
-// const app = express();
-
-// app.use(express.json());
-
-// app.get("/", (req: Request, res: Response) => {
-//   res.send("Hello World");
-// });
-
-// export default app;

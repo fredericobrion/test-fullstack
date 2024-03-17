@@ -3,7 +3,6 @@ import UserService from "../../src/services/user.service";
 import { IUserMock, users } from "../mocks/UserModel";
 import UserController from "../../src/controllers/user.controller";
 import { Request, Response } from "express";
-import {} from "../mocks/UserModel";
 import Sinon from "sinon";
 import sinonChai from "sinon-chai";
 
