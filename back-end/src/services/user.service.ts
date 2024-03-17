@@ -1,16 +1,15 @@
-import { PrismaClient } from "@prisma/client";
 import { User } from "../classes/User";
+import IUserService from "../interfaces/IUSerService";
+import IUserModel from "../interfaces/IUserModel";
+import PrismaUserModel from "../models/UserModel";
 import { ServiceResponse } from "../types/serviceResponse";
 
-export default class UserService {
-  private db = new PrismaClient();
-
-  constructor() {}
+export default class UserService implements IUserService {
+  constructor(private db: IUserModel = new PrismaUserModel()) {}
 
   async findAll(): Promise<ServiceResponse<User[]>> {
     try {
-      const users = (await this.db.user.findMany()) as User[];
-      await this.db.$disconnect();
+      const users = await this.db.getUsers();
       return { status: "OK", data: users };
     } catch (error: unknown) {
       return {
@@ -22,11 +21,13 @@ export default class UserService {
 
   async findOne(id: number): Promise<ServiceResponse<User>> {
     try {
-      const user = (await this.db.user.findUnique({ where: { id } })) as User;
+      const user = await this.db.getUserById(id);
       if (!user) {
-        return { status: "CONFLICT", data: { message: "Usuário não encontrado" } };
+        return {
+          status: "NOT_FOUND",
+          data: { message: "Usuário não encontrado" },
+        };
       }
-      await this.db.$disconnect();
       return { status: "OK", data: user };
     } catch (error: unknown) {
       return {
@@ -39,19 +40,15 @@ export default class UserService {
   async create(user: User): Promise<ServiceResponse<User>> {
     try {
       const { email, cpf } = user;
-      const userInDb = await this.db.user.findFirst({
-        where: {
-          OR: [{ email }, { cpf }],
-        },
-      });
-      if (userInDb) {
+      const userWithSameEmail = await this.db.findUserByEmail(email);
+      const userWithSameCpf = await this.db.finduserByCpf(cpf);
+      if (userWithSameCpf || userWithSameEmail) {
         return {
           status: "CONFLICT",
           data: { message: "Usuário já registrado com o e-mail ou CPF" },
         };
       }
-      const newUser = (await this.db.user.create({ data: user })) as User;
-      await this.db.$disconnect();
+      const newUser = await this.db.createUser(user);
       return { status: "CREATED", data: newUser };
     } catch (error: unknown) {
       return {
@@ -63,15 +60,26 @@ export default class UserService {
 
   async update(id: number, user: User): Promise<ServiceResponse<User>> {
     try {
-      const userInDb = await this.db.user.findUnique({ where: { id } });
+      const userInDb = await this.db.getUserById(id);
       if (!userInDb) {
-        return { status: "NOT_FOUND", data: { message: "Usuário não encontrado" } };
+        return {
+          status: "NOT_FOUND",
+          data: { message: "Usuário não encontrado" },
+        };
       }
-      const updatedUser = await this.db.user.update({
-        where: { id },
-        data: user,
-      });
-      await this.db.$disconnect();
+      const { email, cpf } = user;
+      const userWithSameEmail = await this.db.findUserByEmail(email);
+      const userWithSameCpf = await this.db.finduserByCpf(cpf);
+      if (
+        (userWithSameEmail && userWithSameEmail?.id !== id) ||
+        (userWithSameCpf && userWithSameCpf?.id !== id)
+      ) {
+        return {
+          status: "CONFLICT",
+          data: { message: "Usuário já registrado com o e-mail ou CPF" },
+        };
+      }
+      const updatedUser = await this.db.updateUser(id, user);
       return { status: "OK", data: updatedUser as User };
     } catch (error: unknown) {
       return {
