@@ -16,5 +16,8 @@ Verifique se está dentro do repositório ```front-end``` e rode o comando ```np
 
 ## Funcionalidades
 1) Página inicial com listagem de usuários
-3) Página de criação de usuários ```/add```
-4) Página de atualização de usuários ```/:id```
+![página principal](./public/main-page.jpeg "Página principal")
+2) Página de criação de usuários ```/add```
+![página principal](./public/add-page.jpeg "Página de criação de usuários")
+3) Página de atualização de usuários ```/:id```
+![página principal](./public/edit-page.jpeg "Página de atualização de usuários")
