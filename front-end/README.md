@@ -21,3 +21,5 @@ Verifique se está dentro do repositório ```front-end``` e rode o comando ```np
 ![página principal](./public/add-page.jpeg "Página de criação de usuários")
 3) Página de atualização de usuários ```/:id```
 ![página principal](./public/edit-page.jpeg "Página de atualização de usuários")
+4) Página de rota não encontrada
+![página principal](./public/not-found-page.jpeg "Página de rota não encontrada")
