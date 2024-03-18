@@ -1,6 +1,5 @@
 import express from "express";
 import router from "./routes";
-import helmet from "helmet";
 import limiter from "./utils/rateLimiter";
 
 class App {
@@ -22,7 +21,6 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
-    this.app.use(helmet());
     this.app.use(limiter);
   }
 
