@@ -16,8 +16,10 @@
 - <a href="https://www.npmjs.com/package/cors" target="_blank">Cors</a>
 
 ## Testes
-Verifique se está dentro do repositório ```back-end``` e rode o comando ```npm test``` para testar as camadas service e controller.
+Verifique se está dentro do repositório ```back-end``` e rode o comando ```npm test``` para testar as funções auxiliares e as camadas service e controller.
 
+### Cobertura dos testes
+Verifique se está dentro do repositório ```back-end``` e rode o comando ```npm run test:coverage``` para testar cobertura dos testes.
 
 ## Funcionalidades
 1) Endpoint ```/users``` para os usuários.
