@@ -8,3 +8,13 @@ services:
       - "3001:3001"
     volumes:
       - ./back-end:/usr/src/app
+
+  front:
+    build: ./front-end
+    container_name: users-front
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./front-end:/usr/src/app
+    depends_on:
+      - api

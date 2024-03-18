@@ -15,11 +15,14 @@ export type ProviderValues = {
   setLoading: (loading: boolean) => void;
   userBeingCreated: User | null;
   setUserBeingCreated: (user: User | null) => void;
+  calledApi: boolean;
+  setCalledApi: (calledApi: boolean) => void;
 };
 
 function Provider({ children }: ProviderProps) {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
+  const [calledApi, setCalledApi] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [userBeingCreated, setUserBeingCreated] = useState<User | null>(null);
 
@@ -33,6 +36,8 @@ function Provider({ children }: ProviderProps) {
       setUsers,
       userBeingCreated,
       setUserBeingCreated,
+      calledApi,
+      setCalledApi,
     }),
     [loading, users, error]
   );

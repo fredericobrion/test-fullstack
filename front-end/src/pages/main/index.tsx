@@ -8,7 +8,7 @@ import { getAllUsers } from "../../services/users";
 function MainPage() {
   const navigate = useNavigate();
 
-  const { users, setUserBeingCreated, setLoading, setUsers, setError } =
+  const { users, setUserBeingCreated, setLoading, setUsers, setError, calledApi, setCalledApi } =
     useContext(Context);
 
   useEffect(() => {
@@ -24,8 +24,9 @@ function MainPage() {
       }
     };
 
-    if (!users.length) {
+    if (!users.length && !calledApi) {
       getUsersFromDb();
+      setCalledApi(true);
     }
   }, []);
 
