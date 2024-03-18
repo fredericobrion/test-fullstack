@@ -12,10 +12,10 @@
 - <a href="https://uiball.com/ldrs/" target="_blank">LDRS</a>
 
 ## Testes
-Verifique se está dentro do repositório ```front-end``` e rode o comando ```npm test``` para testar as camadas service e controller.
+Verifique se está dentro do repositório ```front-end``` e rode o comando ```npm test``` para testar a aplicação.
 
 ### Cobertura dos testes
-Verifique se está dentro do repositório ```front-end``` e rode o comando ```npm run coverage``` para testar as camadas service e controller.
+Verifique se está dentro do repositório ```front-end``` e rode o comando ```npm run coverage``` para testar a cobertura dos testes.
 
 ## Funcionalidades
 1) Página inicial com listagem de usuários
