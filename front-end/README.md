@@ -14,6 +14,9 @@
 ## Testes
 Verifique se está dentro do repositório ```front-end``` e rode o comando ```npm test``` para testar as camadas service e controller.
 
+### Cobertura dos testes
+Verifique se está dentro do repositório ```front-end``` e rode o comando ```npm run coverage``` para testar as camadas service e controller.
+
 ## Funcionalidades
 1) Página inicial com listagem de usuários
 ![página principal](./public/main-page.jpeg "Página principal")
