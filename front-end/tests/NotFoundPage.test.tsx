@@ -5,8 +5,6 @@ import { screen } from "@testing-library/react";
 import App from "../src/App";
 import { renderWithRouter } from "./utils/renderWithRouter";
 import ProviderMock from "./mocks/ProviderMock";
-import { users } from "./mocks/user";
-import { updateUser } from "../src/services/users";
 
 vi.mock("../src/services/users");
 
