@@ -14,9 +14,15 @@ const validateCPF = (cpf: string) => {
 
 const validatePhone = (phone: string) => {
   return phoneRegex.test(phone);
-}
+};
 
-const validateInputs = (name:string, email: string, cpf: string, phone: string, status: string) => {
+const validateInputs = (
+  name: string,
+  email: string,
+  cpf: string,
+  phone: string,
+  status: string
+) => {
   const emailIsValid = validateEmail(email);
   const phoneIsValid = validatePhone(phone);
   const cpfIsFormatted = validateCPF(cpf);
@@ -27,9 +33,9 @@ const validateInputs = (name:string, email: string, cpf: string, phone: string, 
     cpfFormat: !cpfIsFormatted,
     phone: !phoneIsValid,
     status: status === "",
-    validsInputs: emailIsValid && cpfIsFormatted && phoneIsValid && status !== "",
-  }
-
-}
+    validsInputs:
+      emailIsValid && cpfIsFormatted && phoneIsValid && status !== "",
+  };
+};
 
 export { validateInputs };

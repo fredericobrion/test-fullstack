@@ -222,6 +222,4 @@ describe("Testes de UserController", function () {
       ...req.body,
     });
   });
-
-
 });

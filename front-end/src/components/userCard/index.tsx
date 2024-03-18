@@ -32,7 +32,7 @@ function UserCard({ user }: UserCardProps) {
         statusColor = styles.disabledCircle;
         translatedStatus = "Desativado";
     }
-  }
+  };
 
   defineStatus();
 

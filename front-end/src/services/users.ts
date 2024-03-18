@@ -5,7 +5,7 @@ const HOST = import.meta.env.VITE_REACT_API_URL || "http://localhost:3001";
 const getAllUsers = async () => {
   try {
     const response = await axios.get(`${HOST}/users`);
-    console.log(response.data)
+    console.log(response.data);
     return response.data as Promise<User[]>;
   } catch (e: unknown) {
     if (e.response && e.response.data && e.response.data.message) {

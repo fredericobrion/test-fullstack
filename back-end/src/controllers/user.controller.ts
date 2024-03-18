@@ -6,7 +6,7 @@ import IUserService from "../interfaces/IUSerService";
 export default class UserController {
   constructor(private service: IUserService = new UserService()) {}
 
-  async findAll(req: Request, res: Response) {
+  async findAll(_req: Request, res: Response) {
     const users = await this.service.findAll();
     res.status(mapStatusHTTP(users.status)).json(users.data);
   }

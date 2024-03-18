@@ -22,9 +22,9 @@ describe("Testando a página de rota não encontrada", () => {
     );
 
     const notFoundTitle = screen.getByText(/página não encontrada/i);
-    const goBackBtn = screen.getByRole('button', {
-      name: /voltar/i
-    })
+    const goBackBtn = screen.getByRole("button", {
+      name: /voltar/i,
+    });
 
     expect(notFoundTitle).toBeInTheDocument();
     expect(goBackBtn).toBeInTheDocument();
@@ -39,9 +39,9 @@ describe("Testando a página de rota não encontrada", () => {
     );
 
     const notFoundTitle = screen.getByText(/página não encontrada/i);
-    const goBackBtn = screen.getByRole('button', {
-      name: /voltar/i
-    })
+    const goBackBtn = screen.getByRole("button", {
+      name: /voltar/i,
+    });
 
     expect(notFoundTitle).toBeInTheDocument();
     expect(goBackBtn).toBeInTheDocument();
@@ -55,9 +55,9 @@ describe("Testando a página de rota não encontrada", () => {
       { route: "/not-found" }
     );
 
-    const goBackBtn = screen.getByRole('button', {
-      name: /voltar/i
-    })
+    const goBackBtn = screen.getByRole("button", {
+      name: /voltar/i,
+    });
 
     await user.click(goBackBtn);
 
@@ -67,4 +67,4 @@ describe("Testando a página de rota não encontrada", () => {
 
     expect(title).toBeInTheDocument();
   });
-})
+});

@@ -8,8 +8,15 @@ import { getAllUsers } from "../../services/users";
 function MainPage() {
   const navigate = useNavigate();
 
-  const { users, setUserBeingCreated, setLoading, setUsers, setError, calledApi, setCalledApi } =
-    useContext(Context);
+  const {
+    users,
+    setUserBeingCreated,
+    setLoading,
+    setUsers,
+    setError,
+    calledApi,
+    setCalledApi,
+  } = useContext(Context);
 
   useEffect(() => {
     const getUsersFromDb = async () => {

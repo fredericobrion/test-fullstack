@@ -1,12 +1,12 @@
 import React from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
-import Provider from "../src/context/Provider";
+import { screen } from "@testing-library/react";
+import ProviderMock from "./mocks/ProviderMock";
 import { users } from "./mocks/user";
 import { getAllUsers } from "../src/services/users";
-import MainPage from "../src/pages/main";
+import { renderWithRouter } from "./utils/renderWithRouter";
+import App from "../src/App";
 
 vi.mock("../src/services/users");
 
@@ -18,12 +18,11 @@ describe("Testando a página inicial", () => {
   it("A página inicial renderiza os elementos estáticos", async () => {
     vi.mocked(getAllUsers).mockResolvedValue(users);
 
-    render(
-      <MemoryRouter>
-        <Provider>
-          <MainPage />
-        </Provider>
-      </MemoryRouter>
+    renderWithRouter(
+      <ProviderMock>
+        <App />
+      </ProviderMock>,
+      { route: "/" }
     );
 
     const userList = screen.getByRole("heading", {
@@ -44,12 +43,11 @@ describe("Testando a página inicial", () => {
   it("A página inicial renderiza os usuários", async () => {
     vi.mocked(getAllUsers).mockResolvedValue(users);
 
-    render(
-      <MemoryRouter>
-        <Provider>
-          <MainPage />
-        </Provider>
-      </MemoryRouter>
+    renderWithRouter(
+      <ProviderMock>
+        <App />
+      </ProviderMock>,
+      { route: "/" }
     );
 
     const emailJoao = await screen.findByText(users[0].email);
@@ -57,5 +55,47 @@ describe("Testando a página inicial", () => {
 
     expect(emailJoao).toBeInTheDocument();
     expect(emailMaria).toBeInTheDocument();
+  });
+
+  it("O botão de adicionar usuários funciona", async () => {
+    vi.mocked(getAllUsers).mockResolvedValue(users);
+
+    const { user } = renderWithRouter(
+      <ProviderMock>
+        <App />
+      </ProviderMock>,
+      { route: "/" }
+    );
+
+    const createBtn = screen.getByRole("button", {
+      name: /novo cliente/i,
+    });
+
+    await user.click(createBtn);
+
+    const inputName = await screen.getByPlaceholderText(/nome/i);
+
+    expect(inputName).toBeInTheDocument();
+  });
+
+  it("O botão de editar usuários funciona", async () => {
+    vi.mocked(getAllUsers).mockResolvedValue(users);
+
+    const { user } = renderWithRouter(
+      <ProviderMock>
+        <App />
+      </ProviderMock>,
+      { route: "/" }
+    );
+
+    const editBtn = screen.getAllByRole("button", {
+      name: /editar/i,
+    });
+
+    await user.click(editBtn[0]);
+
+    const nameInput = (await screen.getByTestId(/name/i)) as HTMLInputElement;
+
+    expect(nameInput).toBeInTheDocument();
   });
 });

@@ -4,7 +4,7 @@ export class User {
   email: string;
   cpf: string;
   phone: string;
-  status: 'ACTIVE' | 'INACTIVE' | 'DISABLED' | 'PENDING';
+  status: "ACTIVE" | "INACTIVE" | "DISABLED" | "PENDING";
 
   constructor(data: User) {
     this.id = data.id;

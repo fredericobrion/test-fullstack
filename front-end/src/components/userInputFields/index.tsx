@@ -74,7 +74,13 @@ function UserInputFields() {
       setErrors(inputsValidations);
       if (inputsValidations.validsInputs) {
         setLoading(true);
-        const createdUser = await createUser({ name, email, cpf, phone, status });
+        const createdUser = await createUser({
+          name,
+          email,
+          cpf,
+          phone,
+          status,
+        });
         setUsers([...users, createdUser]);
         setError("");
         setUserBeingCreated(null);
@@ -117,7 +123,7 @@ function UserInputFields() {
     setUserBeingCreated(null);
     setError("");
     navigate("/");
-  }
+  };
 
   return (
     <form

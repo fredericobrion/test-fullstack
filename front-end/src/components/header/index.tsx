@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import uolLogo from '../../assets/logo-uol.png';
-import styles from './header.module.css';
+import uolLogo from "../../assets/logo-uol.png";
+import styles from "./header.module.css";
 import userIcon from "../../assets/user-icon.svg";
 import Loading from "../loading";
 import { useContext } from "react";
