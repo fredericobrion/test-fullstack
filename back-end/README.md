@@ -14,6 +14,8 @@
 - <a href="https://www.npmjs.com/package/sinon-chai" target="_blank">sinon-chai</a>
 - <a href="https://nodemon.io/" target="_blank">Nodemon</a>
 - <a href="https://www.npmjs.com/package/cors" target="_blank">Cors</a>
+- <a href="https://www.npmjs.com/package/helmet" target="_blank">Helmet</a>
+- <a href="https://www.npmjs.com/package/express-rate-limit" target="_blank">express-rate-limit</a>
 
 ## Testes
 Verifique se está dentro do repositório ```back-end``` e rode o comando ```npm test``` para testar as funções auxiliares e as camadas service e controller.
