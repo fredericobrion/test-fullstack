@@ -121,7 +121,7 @@ describe("Testes de UserService", function () {
     expect(response.data).to.be.an("object");
     expect(response.data).to.have.property(
       "message",
-      "Usuário já registrado com o e-mail ou CPF"
+      "Outro usuário já registrado com o e-mail ou CPF"
     );
   });
 
@@ -140,7 +140,7 @@ describe("Testes de UserService", function () {
     expect(response.data).to.be.an("object");
     expect(response.data).to.have.property(
       "message",
-      "Usuário já registrado com o e-mail ou CPF"
+      "Outro usuário já registrado com o e-mail ou CPF"
     );
   });
 

@@ -169,7 +169,7 @@ describe("Testes de UserController", function () {
 
     expect(res.status).to.have.been.calledWith(409);
     expect(res.json).to.have.been.calledWith({
-      message: "Usuário já registrado com o e-mail ou CPF",
+      message: "Outro usuário já registrado com o e-mail ou CPF",
     });
   });
 
@@ -193,7 +193,7 @@ describe("Testes de UserController", function () {
 
     expect(res.status).to.have.been.calledWith(409);
     expect(res.json).to.have.been.calledWith({
-      message: "Usuário já registrado com o e-mail ou CPF",
+      message: "Outro usuário já registrado com o e-mail ou CPF",
     });
   });
 
